@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "启动程序",
             "preLaunchTask": "tsc",
-            "program": "${workspaceRoot}/index.js",
+            "program": "${workspaceRoot}/out/index.js",
             "outFiles": [
                 "${workspaceRoot}/out/**/*.js"
             ]

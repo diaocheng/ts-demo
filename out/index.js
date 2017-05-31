@@ -10,15 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const koa = require("koa");
 const serve = require("koa-static");
+const path = require("path");
 const app = new koa();
 app.use((ctx, next) => __awaiter(this, void 0, void 0, function* () {
+    const t1 = Date.now();
     yield next();
-    console.log(ctx.body, ctx.path);
+    const t2 = Date.now();
+    const time = t2 - t1;
+    console.log('%s  %s  status: %s  Time: %dms', ctx.method, ctx.path, ctx.status, time);
 }));
-app.use(serve('.'));
+app.use(serve(path.join(__dirname, '../static')));
 // app.use(async (ctx, next) => {
 //   ctx.body = '<h1>hello world</h1>'
 //   ctx.type = 'html'
 //   await next()
 // })
 app.listen(3000);
+//# sourceMappingURL=index.js.map
