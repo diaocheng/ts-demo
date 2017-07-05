@@ -1,26 +1,40 @@
 {
-  "name": "ts-demo",
+  "name": "nashaofu",
   "version": "1.0.0",
-  "description": "typescript koa server demo",
+  "description": "a koa server power by typescript",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nashaofu/nashaofu.git"
+  },
   "keywords": [
-    "typescript",
     "koa",
-    "demo"
+    "server",
+    "blog",
+    "typescript"
   ],
-  "author": "那少妇",
+  "author": "nashaofu",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nashaofu/nashaofu/issues"
+  },
+  "homepage": "https://github.com/nashaofu/nashaofu#readme",
   "dependencies": {
-    "koa": "^2.2.0",
-    "koa-static": "^3.0.0"
+    "koa": "^2.3.0",
+    "koa-body": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.0.1",
+    "koa-route": "^3.2.0"
   },
   "devDependencies": {
     "@types/koa": "^2.0.39",
-    "@types/koa-static": "^2.0.22",
-    "tslint": "^5.3.2",
-    "typescript": "^2.3.3"
+    "@types/koa-bodyparser": "^3.0.23",
+    "@types/koa-json": "^2.0.16",
+    "@types/koa-logger": "^2.0.2",
+    "@types/koa-route": "^3.2.0"
   }
 }
