@@ -1,2 +1,2 @@
-# ts-demo
-a koa server demo power by typescript
+# blog
+a koa server power by typescript

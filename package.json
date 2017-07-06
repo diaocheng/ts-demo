@@ -24,15 +24,12 @@
   "homepage": "https://github.com/nashaofu/nashaofu#readme",
   "dependencies": {
     "koa": "^2.3.0",
-    "koa-body": "^2.3.0",
-    "koa-bodyparser": "^4.2.0",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.0.1",
     "koa-route": "^3.2.0"
   },
   "devDependencies": {
     "@types/koa": "^2.0.39",
-    "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-json": "^2.0.16",
     "@types/koa-logger": "^2.0.2",
     "@types/koa-route": "^3.2.0"
