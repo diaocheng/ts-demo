@@ -8,51 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
 const koa = require("koa");
-const body = require("koa-body");
 const json = require("koa-json");
 const logger = require("koa-logger");
 const route = require("koa-route");
-const path = require("path");
-const url = require("url");
+const body_1 = require("./body");
 const port = 3000;
 const app = new koa();
 app.use(logger());
 app.use(json());
-app.use(body({ multipart: true }));
+app.use(body_1.default());
 app.use(route.post('/upload', (ctx, next) => __awaiter(this, void 0, void 0, function* () {
-    const files = ctx.request.body.files;
-    console.log(ctx.request.rawBody);
-    const body = {};
-    Object.keys(files).forEach((name) => __awaiter(this, void 0, void 0, function* () {
-        if (Array.isArray(files[name])) {
-            files[name].forEach((item, i) => __awaiter(this, void 0, void 0, function* () {
-                item.name = i + item.name;
-                const fileUrl = yield saveFile(item);
-                if (!body[name]) {
-                    body[name] = [];
-                }
-                body[name].push(fileUrl);
-            }));
-        }
-        else {
-            const fileUrl = yield saveFile(files[name]);
-            body[name] = fileUrl;
-        }
-    }));
-    ctx.body = body;
+    console.log(ctx.request);
+    ctx.body = ctx.request.req;
     yield next();
 })));
-const saveFile = (file) => __awaiter(this, void 0, void 0, function* () {
-    const reader = fs.createReadStream(file.path);
-    const dirname = path.join(__dirname, '../upload');
-    const stream = fs.createWriteStream(path.join(dirname, file.name));
-    yield reader.pipe(stream);
-    return {
-        url: url.resolve('upload', file.name),
-    };
-});
 app.listen(port);
 console.log(`listening on port ${port}`);
 //# sourceMappingURL=index.js.map

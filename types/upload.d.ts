@@ -7,7 +7,3 @@ declare namespace upload {
     url: string
   }
 }
-
-declare module 'koa-body' {
-  export = (o: any): void
-}
