@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 @Document
 public class Article implements Serializable {
+    static final long serialVersionUID = 1L;
+
     @Id
     private String id;
     private String title;

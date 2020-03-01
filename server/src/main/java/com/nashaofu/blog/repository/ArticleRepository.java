@@ -2,10 +2,7 @@ package com.nashaofu.blog.repository;
 
 import com.nashaofu.blog.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,8 +28,13 @@ public class ArticleRepository implements MongoRepository<Article, String> {
     }
 
     @Override
-    public Optional<Article> findById(String s) {
-        return Optional.empty();
+    public Optional<Article> findById(String id) {
+        Article article = mongoTemplate.findById(id, Article.class);
+        if (article != null) {
+            return Optional.of(article);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -113,7 +115,13 @@ public class ArticleRepository implements MongoRepository<Article, String> {
 
     @Override
     public <S extends Article> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
+        Criteria criteria = Criteria.byExample(example);
+        Query query = new Query(criteria);
+        long count = this.mongoTemplate.count(query, Article.class);
+        query.with(pageable);
+        List<Article> articles = this.mongoTemplate.find(query, Article.class);
+        PageImpl<Article> page = new PageImpl<Article>(articles, pageable, count);
+        return (Page<S>) page;
     }
 
     @Override
