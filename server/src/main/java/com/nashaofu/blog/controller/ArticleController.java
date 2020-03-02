@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,33 +16,28 @@ public class ArticleController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    @PostMapping(value = "/add")
-    public Article add(@RequestBody Article article) {
+    @PostMapping(value = "/insert")
+    public Article insert(@RequestBody Article article) {
         return this.articleRepository.insert(article);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") String id) {
-        this.articleRepository.deleteById(id);
+    @DeleteMapping("/remove/{id}")
+    public void remove(@PathVariable("id") String id) {
+        this.articleRepository.remove(id);
     }
 
-    @PatchMapping("/update/{id}")
-    public Article update(@PathVariable("id") String id, @RequestBody Article article) {
+    @PutMapping("/save/{id}")
+    public Article save(@PathVariable("id") String id, @RequestBody Article article) {
         article.setId(id);
         return this.articleRepository.save(article);
     }
 
-    @GetMapping("/detail/{id}")
-    public Optional<Article> detail(@PathVariable("id") String id) {
-        return this.articleRepository.findById(id);
-    }
-
-
-    @GetMapping("/query")
-    public Page<Article> query(
+    @GetMapping("/find")
+    public Page<Article> find(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "size", required = false) Integer size
+            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "sort", required = false) String sort
     ) {
         if (page == null) {
             page = 0;
@@ -48,10 +45,22 @@ public class ArticleController {
         if (size == null) {
             size = 10;
         }
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.unsorted());
+
+        String[] sortString = sort.split(",");
+        List<Sort.Order> orders = new ArrayList();
+        for (int i = 0; i < sortString.length; i+=2) {
+            Sort.Order order = sortString[i] == "ASC" ?  Sort.Order.asc(sortString[i+1]):Sort.Order.desc(sortString[i+1]);
+            orders.add(order);
+        }
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "time"));
         Article article = new Article();
         article.setTitle(title);
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("title", match -> match.regex());
-        return this.articleRepository.findAll(Example.of(article, exampleMatcher), pageRequest);
+        return this.articleRepository.find(Example.of(article, exampleMatcher), pageRequest);
+    }
+
+    @GetMapping("/findById/{id}")
+    public Optional<Article> findById(@PathVariable("id") String id) {
+        return this.articleRepository.findById(id);
     }
 }
